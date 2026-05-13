@@ -1,595 +1,1695 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BDD – Bihar Digital Data</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #ffc83c;
-      --primary-dark: #ff9f00;
-      --text: #1e2937;
-      --text-light: #475569;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BDDN - Professional Website Development in Darbhanga, Bihar. Static & E-commerce websites in 7 days. Google Maps Data Extraction Services.">
+    <title>BDDN | Bihar Digital Data & Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #050810;
+            --surface: #0c1020;
+            --surface2: #111827;
+            --border: rgba(255,255,255,0.07);
+            --border-bright: rgba(255,255,255,0.14);
+            --accent: #3b82f6;
+            --accent2: #06b6d4;
+            --accent3: #8b5cf6;
+            --gold: #f59e0b;
+            --text: #f1f5f9;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+            --green: #10b981;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-    }
+        html { scroll-behavior: smooth; }
 
-    /* Navbar */
-    .navbar {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 18px 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 100;
-    }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
 
-    .nav-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: var(--primary-dark);
-    }
+        /* NOISE TEXTURE OVERLAY */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.4;
+        }
 
-    .nav-links {
-      display: flex;
-      gap: 36px;
-    }
+        /* TYPOGRAPHY */
+        .font-display { font-family: 'DM Sans', sans-serif; }
 
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-light);
-      font-weight: 500;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      transition: color 0.3s;
-    }
+        /* GRADIENT MESH BG */
+        .mesh-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .mesh-bg::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
+            animation: drift1 12s ease-in-out infinite alternate;
+        }
+        .mesh-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, transparent 70%);
+            animation: drift2 15s ease-in-out infinite alternate;
+        }
+        @keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(6%, 4%) scale(1.08); } }
+        @keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-5%, -3%) scale(1.05); } }
 
-    .nav-links a:hover {
-      color: var(--primary-dark);
-    }
+        /* ANIMATED GRID */
+        .grid-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 40%, transparent 100%);
+        }
 
-    /* Hero */
-    .hero {
-      background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 100%);
-      padding: 120px 60px 100px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+        /* NAVBAR */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 999;
+            padding: 0 2rem;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5,8,16,0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+        nav.scrolled {
+            background: rgba(5,8,16,0.92);
+        }
 
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255, 200, 60, 0.15);
-      color: #d97706;
-      padding: 8px 20px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      margin-bottom: 20px;
-    }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
+            box-shadow: 0 0 20px rgba(59,130,246,0.4);
+        }
+        .logo-text {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
 
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.6rem, 6vw, 4.5rem);
-      font-weight: 900;
-      line-height: 1.1;
-      color: #0f172a;
-      margin-bottom: 20px;
-    }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: var(--muted2);
+            transition: color 0.2s;
+            letter-spacing: 0.01em;
+        }
+        .nav-links a:hover { color: var(--text); }
 
-    .hero h1 span {
-      color: var(--primary-dark);
-    }
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .btn-wa {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: var(--green);
+            padding: 0.5rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-wa:hover { background: rgba(16,185,129,0.25); border-color: rgba(16,185,129,0.5); }
 
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--text-light);
-      max-width: 620px;
-      margin: 0 auto 40px;
-    }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            color: white;
+            padding: 0.55rem 1.3rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+            box-shadow: 0 4px 20px rgba(59,130,246,0.25);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(59,130,246,0.4); }
 
-    .hero-btn {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #0a0f1e;
-      font-weight: 700;
-      padding: 16px 44px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 1.05rem;
-      box-shadow: 0 10px 30px rgba(255, 200, 60, 0.4);
-      transition: all 0.3s;
-    }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--border-bright);
+            color: var(--text);
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .hero-btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 40px rgba(255, 200, 60, 0.5);
-    }
+        /* HERO */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 100px 2rem 80px;
+        }
 
-    /* Section */
-    .section {
-      padding: 80px 60px;
-    }
+        .hero-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
 
-    .section-alt {
-      background: #f1f5f9;
-    }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(59,130,246,0.08);
+            border: 1px solid rgba(59,130,246,0.2);
+            color: #93c5fd;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+        }
+        .badge-dot {
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
 
-    .section-sub {
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-weight: 600;
-      color: #64748b;
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-    }
+        .hero-h1 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        .hero-h1 .line-em {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 50px;
-      text-align: center;
-    }
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--muted2);
+            line-height: 1.6;
+            max-width: 420px;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
 
-    /* Courses */
-    .course-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 28px;
-    }
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
 
-    .course-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px 30px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
+        .btn-lg {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.8rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            border: none;
+            text-decoration: none;
+        }
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            color: white;
+            box-shadow: 0 8px 32px rgba(59,130,246,0.35);
+        }
+        .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(59,130,246,0.5); }
+        .btn-hero-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-bright);
+            color: var(--text);
+        }
+        .btn-hero-secondary:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
 
-    .course-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      border-color: var(--primary);
-    }
+        /* PRICE CARDS */
+        .price-strip {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        .price-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem 1.6rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .price-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3));
+        }
+        .price-card:hover { border-color: rgba(59,130,246,0.3); }
+        .price-label {
+            font-size: 0.75rem;
+            color: var(--accent2);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        .price-val {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+        .price-tag {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.2rem;
+        }
 
-    .course-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
+        /* HERO VISUAL */
+        .hero-visual {
+            position: relative;
+        }
+        .hero-card-wrap {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+        }
+        .hero-mockup {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+        .mock-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+        .mock-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+        .mock-url {
+            flex: 1;
+            background: rgba(255,255,255,0.06);
+            border-radius: 6px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            padding: 0 0.75rem;
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+        .mock-hero-area {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1));
+            border-radius: 12px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 1px solid rgba(59,130,246,0.15);
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .mock-hero-area::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.2), transparent 60%),
+                        radial-gradient(circle at 70% 50%, rgba(139,92,246,0.15), transparent 60%);
+        }
+        .mock-hero-content { position: relative; z-index: 1; }
+        .mock-hero-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        .mock-hero-sub {
+            font-size: 0.7rem;
+            color: var(--muted2);
+            margin-top: 0.3rem;
+        }
+        .mock-btn-sm {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            margin-top: 0.6rem;
+        }
+        .mock-cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.6rem;
+        }
+        .mock-card-sm {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem;
+        }
+        .mock-card-icon { font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .mock-card-label { font-size: 0.6rem; color: var(--muted2); }
 
-    .course-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      color: #0f172a;
-    }
+        /* Floating stats badge */
+        .float-badge {
+            position: absolute;
+            background: rgba(5,8,16,0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-bright);
+            border-radius: 12px;
+            padding: 0.8rem 1.1rem;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+        }
+        .float-badge-1 {
+            top: -20px;
+            right: -20px;
+        }
+        .float-badge-2 {
+            bottom: -15px;
+            left: -20px;
+        }
+        .badge-icon { font-size: 1.2rem; margin-bottom: 0.2rem; }
+        .badge-num {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .badge-desc { font-size: 0.65rem; color: var(--muted2); }
 
-    .course-card p {
-      color: var(--text-light);
-      margin-bottom: 20px;
-    }
+        /* SECTION COMMON */
+        .section {
+            padding: 7rem 2rem;
+        }
+        .section-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
-    .course-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-label::before {
+            content: '';
+            width: 20px; height: 1px;
+            background: var(--accent);
+        }
 
-    .tag {
-      background: rgba(255, 200, 60, 0.1);
-      color: #d97706;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
+        .section-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        .section-sub {
+            font-size: 1.05rem;
+            color: var(--muted2);
+            max-width: 500px;
+            font-weight: 300;
+            line-height: 1.7;
+        }
 
-    /* Stats */
-    .stats-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px 20px;
-      margin: 60px 0;
-    }
+        /* STATS BAR */
+        #stats {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+        }
+        .stats-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .stat-item {
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border-right: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-item:hover { background: rgba(59,130,246,0.04); }
+        .stat-num {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--text), var(--muted2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
 
-    .stat {
-      text-align: center;
-    }
+        /* WHO WE SERVE */
+        #websites { background: var(--bg); }
+        .serve-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            margin-top: 3.5rem;
+        }
+        .serve-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: default;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .serve-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .serve-card:hover { transform: translateY(-6px); border-color: rgba(59,130,246,0.3); background: rgba(255,255,255,0.03); }
+        .serve-card:hover::after { transform: scaleX(1); }
+        .serve-emoji { font-size: 2.2rem; margin-bottom: 0.8rem; display: block; }
+        .serve-label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--muted2);
+            line-height: 1.3;
+        }
 
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.6rem;
-      font-weight: 900;
-      color: var(--primary-dark);
-    }
+        /* FEATURES */
+        #features { background: var(--surface); }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 3.5rem;
+        }
+        .feature-item {
+            background: var(--surface);
+            padding: 2rem;
+            transition: background 0.2s;
+            position: relative;
+        }
+        .feature-item:hover { background: rgba(59,130,246,0.05); }
+        .feature-icon {
+            width: 44px; height: 44px;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+        .feature-desc {
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
 
-    .stat-label {
-      color: #64748b;
-      font-weight: 500;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-    }
+        /* PRICING */
+        #pricing { background: var(--bg); }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+        .plan-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .plan-card.featured {
+            background: linear-gradient(160deg, rgba(59,130,246,0.08), rgba(139,92,246,0.06));
+            border-color: rgba(59,130,246,0.3);
+        }
+        .plan-card.featured::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3));
+        }
+        .plan-card:hover { transform: translateY(-4px); }
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: linear-gradient(90deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+            border: 1px solid rgba(59,130,246,0.3);
+            color: #93c5fd;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.7rem;
+            border-radius: 100px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        .plan-name {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .plan-price {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            margin: 1rem 0;
+        }
+        .plan-price sup {
+            font-size: 1.5rem;
+            vertical-align: top;
+            margin-top: 0.6rem;
+        }
+        .plan-desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+        .plan-divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 1.5rem;
+        }
+        .plan-features-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+        .plan-features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            font-size: 0.88rem;
+            color: var(--muted2);
+        }
+        .plan-features-list li .check {
+            color: var(--green);
+            font-size: 0.75rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+        .plan-cta {
+            margin-top: 2rem;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .plan-cta-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            color: white;
+            box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+        }
+        .plan-cta-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 32px rgba(59,130,246,0.45); }
+        .plan-cta-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-bright);
+            color: var(--text);
+        }
+        .plan-cta-secondary:hover { background: rgba(255,255,255,0.08); }
 
-    /* About */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
+        /* DATA SECTION */
+        #data { background: var(--surface); }
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        .data-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+        .data-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--muted2);
+        }
+        .data-list li .icon-wrap {
+            width: 32px; height: 32px;
+            background: rgba(6,182,212,0.1);
+            border: 1px solid rgba(6,182,212,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--accent2);
+            flex-shrink: 0;
+        }
 
-    .about-text p {
-      color: var(--text-light);
-      margin-bottom: 20px;
-      font-size: 1.02rem;
-    }
+        .data-table-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .data-table-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .data-table-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted2);
+        }
+        .data-table-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: rgba(6,182,212,0.1);
+            border: 1px solid rgba(6,182,212,0.2);
+            color: var(--accent2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 100px;
+        }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th {
+            padding: 0.8rem 1.5rem;
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table td {
+            padding: 0.9rem 1.5rem;
+            font-size: 0.82rem;
+            color: var(--muted2);
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: rgba(255,255,255,0.015); }
+        .td-name { color: var(--text); font-weight: 500; }
+        .star { color: var(--gold); }
 
-    .feature-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+        /* CONTACT */
+        #contact { background: var(--bg); }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+        .contact-info-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .contact-sub {
+            color: var(--muted2);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+        }
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.2s;
+            text-decoration: none;
+        }
+        .contact-detail:hover { border-color: rgba(59,130,246,0.3); }
+        .contact-detail-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .contact-detail-text { flex: 1; }
+        .cd-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.15rem; }
+        .cd-val { font-size: 0.92rem; font-weight: 500; color: var(--text); }
 
-    .feature-list li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #334155;
-    }
+        /* FORM */
+        .contact-form-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-form-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3));
+        }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .form-input::placeholder { color: var(--muted); }
+        textarea.form-input { resize: vertical; min-height: 100px; }
 
-    .feature-list li::before {
-      content: "✦";
-      color: var(--primary-dark);
-    }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-    .director-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 50px 40px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    }
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748b' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+        }
 
-    .director-avatar {
-      width: 100px;
-      height: 100px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      margin: 0 auto 20px;
-      color: white;
-    }
+        .btn-submit {
+            width: 100%;
+            padding: 0.95rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 6px 24px rgba(59,130,246,0.3);
+            margin-top: 0.5rem;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(59,130,246,0.45); }
+        .btn-submit:active { transform: translateY(0); }
 
-    /* Contact */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px;
-    }
+        /* FOOTER */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem 2rem;
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        .footer-brand p {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin-top: 0.75rem;
+            line-height: 1.6;
+            max-width: 280px;
+            font-weight: 300;
+        }
+        .footer-col-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1.2rem;
+        }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+        .footer-links a {
+            font-size: 0.88rem;
+            color: var(--muted2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-copy { font-size: 0.8rem; color: var(--muted); }
+        .footer-tagline {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-style: italic;
+        }
 
-    .contact-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 36px 28px;
-      text-align: center;
-      transition: all 0.3s;
-    }
+        /* FLOATING WA */
+        .float-wa {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 998;
+            width: 56px; height: 56px;
+            background: var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 8px 32px rgba(16,185,129,0.4);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .float-wa:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(16,185,129,0.6); }
+        .float-wa-ping {
+            position: absolute;
+            top: -2px; right: -2px;
+            width: 14px; height: 14px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid var(--bg);
+        }
+        .float-wa-ping::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: rgba(16,185,129,0.4);
+            border-radius: 50%;
+            animation: wa-ping 2s ease infinite;
+        }
+        @keyframes wa-ping {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
 
-    .contact-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-4px);
-    }
+        /* MOBILE NAV DRAWER */
+        .mobile-drawer {
+            position: fixed;
+            top: 72px; left: 0; right: 0;
+            background: rgba(5,8,16,0.97);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            z-index: 998;
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .mobile-drawer.open { display: flex; }
+        .mobile-drawer a {
+            color: var(--muted2);
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s;
+        }
+        .mobile-drawer a:hover { color: var(--text); }
+        .mobile-drawer a:last-child { border-bottom: none; }
 
-    .contact-icon {
-      font-size: 2.5rem;
-      margin-bottom: 16px;
-    }
+        /* SCROLL REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    .contact-card h4 {
-      color: #d97706;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      margin-bottom: 12px;
-    }
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+            .hero-visual { display: none; }
+            .serve-grid { grid-template-columns: repeat(3, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; max-width: 480px; }
+            .data-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-top { grid-template-columns: 1fr 1fr; }
+            .stats-inner { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(2) { border-right: none; }
+        }
 
-    /* Enroll Form */
-    .enroll-box {
-      background: white;
-      border: 2px solid rgba(255, 200, 60, 0.3);
-      border-radius: 20px;
-      padding: 60px 50px;
-      max-width: 620px;
-      margin: 0 auto;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-    }
-
-    .enroll-box label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #475569;
-      font-size: 0.9rem;
-    }
-
-    .enroll-box input,
-    .enroll-box select,
-    .enroll-box textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 1rem;
-    }
-
-    .enroll-box button {
-      width: 100%;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #0a0f1e;
-      border: none;
-      padding: 16px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .enroll-box button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(255, 200, 60, 0.4);
-    }
-
-    /* Footer */
-    .footer {
-      background: #0f172a;
-      color: #94a3b8;
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 0.95rem;
-    }
-
-    .footer span {
-      color: var(--primary);
-    }
-
-    @media (max-width: 768px) {
-      .navbar, .hero, .section {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-      .about-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .btn-wa { display: none; }
+            .mobile-menu-btn { display: flex; }
+            .serve-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: 1fr; }
+            .price-strip { flex-direction: column; }
+            .form-grid { grid-template-columns: 1fr; }
+            .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-brand">BDD</div>
-    <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#courses">Courses</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+<!-- NAVBAR -->
+<nav id="navbar">
+    <a class="nav-logo" href="#home">
+        <div class="logo-icon">B</div>
+        <span class="logo-text">BDDN</span>
+    </a>
+
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#websites">Services</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#data">Data</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-cta">
+        <a href="https://wa.me/917982229379" class="btn-wa" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
+        <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+            Get Started
+        </button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </div>
-  </nav>
+</nav>
 
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <div class="hero-badge">🎓 BIHAR DIGITAL DATA</div>
-    <h1>Master <span>Data Analytics,</span><br>Digital Marketing &<br>Python Programming</h1>
-    <p>Industry-led training with placement assistance, live projects, and lifetime access to course materials.</p>
-    <a href="#enroll" class="hero-btn">Enroll Now →</a>
-  </section>
+<!-- MOBILE DRAWER -->
+<nav class="mobile-drawer" id="mobile-drawer">
+    <a href="#home" onclick="closeMobileMenu()">Home</a>
+    <a href="#websites" onclick="closeMobileMenu()">Services</a>
+    <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="#data" onclick="closeMobileMenu()">Data Services</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+</nav>
 
-  <!-- Courses -->
-  <section class="section" id="courses">
-    <div class="section-sub">What We Offer</div>
-    <div class="section-title">Our Professional Courses</div>
-    
-    <div class="course-grid">
-      <div class="course-card">
-        <div class="course-icon">📊</div>
-        <h3>Data Analytics</h3>
-        <p>Become a professional Data Analyst with hands-on training in Excel, SQL, Power BI, Tableau and more.</p>
-        <div class="course-tags">
-          <span class="tag">Excel</span>
-          <span class="tag">SQL</span>
-          <span class="tag">Power BI</span>
-          <span class="tag">Tableau</span>
+<!-- HERO -->
+<section id="home">
+    <div class="mesh-bg"></div>
+    <div class="grid-lines"></div>
+
+    <div class="hero-inner">
+        <div class="hero-left">
+            <div class="hero-badge reveal">
+                <span class="badge-dot"></span>
+                Darbhanga, Bihar — Est. 2024
+            </div>
+
+            <h1 class="hero-h1 reveal">
+                Professional<br>Websites in<br><span class="line-em">Just 7 Days</span>
+            </h1>
+
+            <p class="hero-sub reveal">
+                Modern, fast, secure & responsive websites for clinics, coaching institutes, shops & local businesses across Bihar.
+            </p>
+
+            <div class="hero-btns reveal">
+                <button class="btn-lg btn-hero-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                    Start Your Project <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <a href="https://wa.me/917982229379" class="btn-lg btn-hero-secondary" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color:var(--green)"></i> WhatsApp Now
+                </a>
+            </div>
+
+            <div class="price-strip reveal">
+                <div class="price-card">
+                    <div class="price-label">Static Website</div>
+                    <div class="price-val">₹8,999*</div>
+                    <div class="price-tag">1 Year hosting included</div>
+                </div>
+                <div class="price-card">
+                    <div class="price-label">E-Commerce</div>
+                    <div class="price-val">₹14,999*</div>
+                    <div class="price-tag">Full online store</div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="course-card">
-        <div class="course-icon">📣</div>
-        <h3>Digital Marketing</h3>
-        <p>Master SEO, Google Ads, Social Media, Email Marketing and drive real business growth.</p>
-        <div class="course-tags">
-          <span class="tag">SEO</span>
-          <span class="tag">Google Ads</span>
-          <span class="tag">Social Media</span>
+        <div class="hero-visual">
+            <div class="float-badge float-badge-1">
+                <div class="badge-icon">⚡</div>
+                <div class="badge-num">7 Days</div>
+                <div class="badge-desc">Delivery guarantee</div>
+            </div>
+
+            <div class="hero-card-wrap">
+                <div class="hero-mockup">
+                    <div class="mock-bar">
+                        <div class="mock-dot" style="background:#ff5f57"></div>
+                        <div class="mock-dot" style="background:#febc2e"></div>
+                        <div class="mock-dot" style="background:#28c840"></div>
+                        <div class="mock-url">
+                            <i class="fa-solid fa-lock" style="font-size:0.55rem;color:var(--green);margin-right:4px"></i>
+                            yourbusiness.com
+                        </div>
+                    </div>
+                    <div class="mock-hero-area">
+                        <div class="mock-hero-content">
+                            <div class="mock-hero-title">Your Business.<br>Online. Always.</div>
+                            <div class="mock-hero-sub">Professional · Fast · Secure</div>
+                            <div class="mock-btn-sm">Get Started →</div>
+                        </div>
+                    </div>
+                    <div class="mock-cards-row">
+                        <div class="mock-card-sm">
+                            <div class="mock-card-icon">🛒</div>
+                            <div class="mock-card-label">Shop</div>
+                        </div>
+                        <div class="mock-card-sm">
+                            <div class="mock-card-icon">📞</div>
+                            <div class="mock-card-label">Contact</div>
+                        </div>
+                        <div class="mock-card-sm">
+                            <div class="mock-card-icon">⭐</div>
+                            <div class="mock-card-label">Reviews</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="float-badge float-badge-2">
+                <div class="badge-icon">🔒</div>
+                <div class="badge-num">SSL + SEO</div>
+                <div class="badge-desc">Free with every plan</div>
+            </div>
         </div>
-      </div>
+    </div>
+</section>
 
-      <div class="course-card">
-        <div class="course-icon">🐍</div>
-        <h3>Python Programming</h3>
-        <p>From Python basics to advanced data science, automation, and real-world projects.</p>
-        <div class="course-tags">
-          <span class="tag">Core Python</span>
-          <span class="tag">Data Science</span>
-          <span class="tag">Automation</span>
+<!-- STATS -->
+<section id="stats">
+    <div class="stats-inner">
+        <div class="stat-item reveal">
+            <div class="stat-num">50+</div>
+            <div class="stat-label">Websites Delivered</div>
         </div>
-      </div>
+        <div class="stat-item reveal">
+            <div class="stat-num">7</div>
+            <div class="stat-label">Days Avg. Delivery</div>
+        </div>
+        <div class="stat-item reveal">
+            <div class="stat-num">1yr</div>
+            <div class="stat-label">Free Support</div>
+        </div>
+        <div class="stat-item reveal">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Client Satisfaction</div>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- Stats -->
-  <div class="section" style="padding-top: 0;">
-    <div class="stats-strip">
-      <div class="stat">
-        <div class="stat-num">5000+</div>
-        <div class="stat-label">Students Trained</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">95%</div>
-        <div class="stat-label">Placement Rate</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">3</div>
-        <div class="stat-label">Expert Courses</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">10+</div>
-        <div class="stat-label">Years Experience</div>
-      </div>
+<!-- WHO WE SERVE -->
+<section id="websites" class="section">
+    <div class="section-inner">
+        <div class="section-label reveal">Who We Serve</div>
+        <h2 class="section-title reveal">Built for Every<br>Local Business</h2>
+        <p class="section-sub reveal">From hospitals to home businesses — we build digital presence for businesses of all sizes across Bihar.</p>
+
+        <div class="serve-grid">
+            <div class="serve-card reveal"><span class="serve-emoji">🏥</span><span class="serve-label">Clinics & Hospitals</span></div>
+            <div class="serve-card reveal"><span class="serve-emoji">🏫</span><span class="serve-label">Coaching Institutes</span></div>
+            <div class="serve-card reveal"><span class="serve-emoji">🛒</span><span class="serve-label">Shops & Stores</span></div>
+            <div class="serve-card reveal"><span class="serve-emoji">📰</span><span class="serve-label">News & Blogs</span></div>
+            <div class="serve-card reveal"><span class="serve-emoji">💼</span><span class="serve-label">Startups & Agencies</span></div>
+            <div class="serve-card reveal"><span class="serve-emoji">🛍</span><span class="serve-label">E-Commerce</span></div>
+        </div>
     </div>
-  </div>
+</section>
 
-  <!-- About -->
-  <section class="section section-alt" id="about">
-    <div class="section-sub">Who We Are</div>
-    <div class="section-title">About BDD</div>
-    
-    <div class="about-grid">
-      <div class="about-text">
-        <p>Bihar Digital Data (BDD) is committed to bridging the digital skills gap in Bihar. We provide industry-relevant training that guarantees placement assistance and real career outcomes.</p>
-        <p>Our courses are designed by industry experts and include hands-on projects, live sessions, and certification preparation.</p>
-        
-        <ul class="feature-list">
-          <li>100% Practical Training</li>
-          <li>Lifetime Access to Materials</li>
-          <li>Placement Assistance</li>
-          <li>Certified Trainers</li>
-          <li>Live Sessions</li>
-          <li>Industry Projects</li>
-        </ul>
-      </div>
+<!-- FEATURES -->
+<section id="features" class="section">
+    <div class="section-inner">
+        <div class="section-label reveal">What's Included</div>
+        <h2 class="section-title reveal">Everything You Need<br>to Go Online</h2>
 
-      <div class="director-card">
-        <div class="director-avatar">👨‍💼</div>
-        <h3>S M Nadeem</h3>
-        <p style="color:#64748b; font-weight:500;">Director & Founder</p>
-        <p style="margin-top:20px; color:#475569;">
-          Under his expert guidance, BDD has empowered thousands of students across Bihar with industry-ready digital skills.
-        </p>
-      </div>
+        <div class="features-grid reveal">
+            <div class="feature-item">
+                <div class="feature-icon">📄</div>
+                <div class="feature-title">7–10 Page Website</div>
+                <div class="feature-desc">Complete professional site with all essential sections.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">Mobile Responsive</div>
+                <div class="feature-desc">Pixel-perfect on all devices — phones, tablets, desktops.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-brands fa-whatsapp" style="color:var(--green)"></i></div>
+                <div class="feature-title">WhatsApp Integration</div>
+                <div class="feature-desc">Customers reach you directly from your website.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-title">Free Logo Design</div>
+                <div class="feature-desc">Custom logo crafted to match your brand identity.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🌐</div>
+                <div class="feature-title">Domain + Hosting</div>
+                <div class="feature-desc">1 full year of domain registration & fast hosting included.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📍</div>
+                <div class="feature-title">Google Maps</div>
+                <div class="feature-desc">Embedded map so customers always find you.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🔍</div>
+                <div class="feature-title">SEO Optimized</div>
+                <div class="feature-desc">Built to rank on Google and attract local customers.</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛡</div>
+                <div class="feature-title">1 Year Support</div>
+                <div class="feature-desc">Free content updates and technical support for 12 months.</div>
+            </div>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- Contact -->
-  <section class="section" id="contact">
-    <div class="section-sub">Reach Out</div>
-    <div class="section-title">Get In Touch</div>
-    
-    <div class="contact-grid">
-      <div class="contact-card">
-        <div class="contact-icon">📍</div>
-        <h4>Visit Us</h4>
-        <p>Khan Chowk, Near Vision International School</p>
-        <p>Darbhanga, Bihar – 846004</p>
-      </div>
-      <div class="contact-card">
-        <div class="contact-icon">📞</div>
-        <h4>Call Us</h4>
-        <p>9955889177</p>
-        <p>Mon–Sat: 9 AM – 8 PM</p>
-      </div>
-      <div class="contact-card">
-        <div class="contact-icon">👨‍💼</div>
-        <h4>Director</h4>
-        <p>S M Nadeem</p>
-        <p>Director & Founder</p>
-      </div>
+<!-- PRICING -->
+<section id="pricing" class="section">
+    <div class="section-inner">
+        <div class="section-label reveal">Transparent Pricing</div>
+        <h2 class="section-title reveal">Simple. Affordable.<br>No Hidden Costs.</h2>
+
+        <div class="pricing-grid reveal">
+            <div class="plan-card">
+                <div class="plan-badge">Starter</div>
+                <div class="plan-name">Static Website</div>
+                <div class="plan-price"><sup>₹</sup>8,999*</div>
+                <div class="plan-desc">Perfect for clinics, coaching centers, restaurants & small businesses.</div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features-list">
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> 7–10 Professional Pages</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Mobile Responsive Design</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Free Logo Design</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> 1 Year Domain + Hosting</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> WhatsApp & Google Maps</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> SEO Optimization</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> 1 Year Free Support</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Delivered in 7 Days</li>
+                </ul>
+                <button class="plan-cta plan-cta-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                    Get This Plan
+                </button>
+            </div>
+
+            <div class="plan-card featured">
+                <div class="plan-badge">⚡ Most Popular</div>
+                <div class="plan-name">E-Commerce Store</div>
+                <div class="plan-price"><sup>₹</sup>14,999*</div>
+                <div class="plan-desc">Full online store with product catalog, cart & payment integration.</div>
+                <div class="plan-divider"></div>
+                <ul class="plan-features-list">
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Everything in Static Plan</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Product Catalog & Cart</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Online Payment Integration</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Order Management Panel</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Customer Login Portal</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Inventory Management</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Advanced SEO + Analytics</li>
+                    <li><span class="check"><i class="fa-solid fa-check"></i></span> Priority 1 Year Support</li>
+                </ul>
+                <button class="plan-cta plan-cta-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                    Get This Plan
+                </button>
+            </div>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- Enroll Section -->
-  <section class="section section-alt" id="enroll">
-    <div class="section-sub" style="text-align:center;">Start Your Journey</div>
-    <div class="section-title">Enroll Today</div>
+<!-- DATA SERVICES -->
+<section id="data" class="section">
+    <div class="section-inner">
+        <div class="data-grid">
+            <div>
+                <div class="section-label reveal">Data Services</div>
+                <h2 class="section-title reveal">Google Maps<br>Data Extraction</h2>
+                <p class="section-sub reveal">Accurate, verified business leads delivered in CSV or Excel — ready for your sales team.</p>
 
-    <div class="enroll-box">
-      <label>Full Name</label>
-      <input type="text" placeholder="Enter your full name" id="name"/>
+                <ul class="data-list reveal">
+                    <li>
+                        <span class="icon-wrap"><i class="fa-solid fa-check"></i></span>
+                        Verified & accurate business data
+                    </li>
+                    <li>
+                        <span class="icon-wrap"><i class="fa-solid fa-location-dot"></i></span>
+                        Targeted by city, area & category
+                    </li>
+                    <li>
+                        <span class="icon-wrap"><i class="fa-solid fa-phone"></i></span>
+                        Phone, address, rating & reviews
+                    </li>
+                    <li>
+                        <span class="icon-wrap"><i class="fa-solid fa-bolt"></i></span>
+                        Fast delivery — within 24 hours
+                    </li>
+                    <li>
+                        <span class="icon-wrap"><i class="fa-solid fa-file-excel"></i></span>
+                        Clean CSV / Excel format
+                    </li>
+                </ul>
 
-      <label>Phone Number</label>
-      <input type="tel" placeholder="Enter your phone number" id="phone"/>
+                <button class="btn-lg btn-hero-primary reveal" style="margin-top:2rem;" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                    Order Data Now <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
 
-      <label>Select Course</label>
-      <select id="course">
-        <option value="">-- Choose a Course --</option>
-        <option>Data Analytics</option>
-        <option>Digital Marketing</option>
-        <option>Python Programming</option>
-      </select>
-
-      <label>Message (optional)</label>
-      <textarea rows="4" placeholder="Any questions or queries?"></textarea>
-
-      <button onclick="submitForm()">Submit Enrollment Request</button>
+            <div class="reveal">
+                <div class="data-table-card">
+                    <div class="data-table-header">
+                        <span class="data-table-title">Sample: Dental Clinics — Darbhanga</span>
+                        <span class="data-table-tag">Live Preview</span>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Business</th>
+                                <th>Phone</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="td-name">Dr. Rajesh Dental Care</td>
+                                <td>+91 98XX XXXXXX</td>
+                                <td><span class="star">★</span> 4.8</td>
+                            </tr>
+                            <tr>
+                                <td class="td-name">Smile Perfect Clinic</td>
+                                <td>+91 70XX XXXXXX</td>
+                                <td><span class="star">★</span> 4.6</td>
+                            </tr>
+                            <tr>
+                                <td class="td-name">City Dental Hospital</td>
+                                <td>+91 94XX XXXXXX</td>
+                                <td><span class="star">★</span> 4.5</td>
+                            </tr>
+                            <tr>
+                                <td class="td-name">New Life Dentals</td>
+                                <td>+91 87XX XXXXXX</td>
+                                <td><span class="star">★</span> 4.3</td>
+                            </tr>
+                            <tr>
+                                <td class="td-name">Arogya Dental Centre</td>
+                                <td>+91 91XX XXXXXX</td>
+                                <td><span class="star">★</span> 4.7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-size:0.72rem;color:var(--muted);margin-top:0.75rem;text-align:center;">
+                    ✦ Phones redacted in preview · Full data delivered on order
+                </p>
+            </div>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    © 2026 <span>Bihar Digital Data (BDD)</span>. All Rights Reserved.<br>
-    Empowering Bihar with Digital Skills
-  </footer>
+<!-- CONTACT -->
+<section id="contact" class="section">
+    <div class="section-inner">
+        <div class="contact-grid">
+            <div>
+                <div class="section-label reveal">Contact</div>
+                <h2 class="contact-info-title reveal">Ready to Go<br>Digital?</h2>
+                <p class="contact-sub reveal">Tell us about your project and we'll get back to you within a few hours.</p>
 
-  <script>
-    function submitForm() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const course = document.getElementById('course').value;
+                <div class="reveal">
+                    <a href="tel:+917982229379" class="contact-detail">
+                        <div class="contact-detail-icon" style="background:rgba(59,130,246,0.1);color:var(--accent)">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="contact-detail-text">
+                            <div class="cd-label">Call us directly</div>
+                            <div class="cd-val">+91 79822 29379</div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right" style="color:var(--muted);font-size:0.8rem"></i>
+                    </a>
 
-      if (name && phone && course) {
-        alert(`✅ Thank you ${name}!\nYour enrollment request for ${course} has been received.\nWe will contact you at ${phone} shortly.`);
-      } else {
-        alert("⚠️ Please fill in all required fields (Name, Phone, Course).");
-      }
+                    <a href="https://wa.me/917982229379" class="contact-detail" target="_blank">
+                        <div class="contact-detail-icon" style="background:rgba(16,185,129,0.1);color:var(--green)">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-detail-text">
+                            <div class="cd-label">WhatsApp</div>
+                            <div class="cd-val">+91 79822 29379</div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right" style="color:var(--muted);font-size:0.8rem"></i>
+                    </a>
+
+                    <div class="contact-detail" style="cursor:default">
+                        <div class="contact-detail-icon" style="background:rgba(245,158,11,0.1);color:var(--gold)">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="contact-detail-text">
+                            <div class="cd-label">Location</div>
+                            <div class="cd-val">Darbhanga, Bihar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-wrap reveal">
+                <form id="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-input" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Service Needed</label>
+                        <select class="form-input form-select" required>
+                            <option value="" disabled selected>Select a service</option>
+                            <option>Static Website — ₹8,999</option>
+                            <option>E-Commerce Store — ₹14,999</option>
+                            <option>Google Maps Data Extraction</option>
+                            <option>Other / Custom</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-input" placeholder="Tell us about your business & what you need..." rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Send Message <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="nav-logo" style="margin-bottom:0.75rem">
+                    <div class="logo-icon">B</div>
+                    <span class="logo-text">BDDN</span>
+                </div>
+                <p>Bihar Digital Data & Network — empowering local businesses with professional digital solutions at affordable prices.</p>
+            </div>
+
+            <div>
+                <div class="footer-col-title">Services</div>
+                <ul class="footer-links">
+                    <li><a href="#websites">Static Website</a></li>
+                    <li><a href="#pricing">E-Commerce Store</a></li>
+                    <li><a href="#data">Data Extraction</a></li>
+                    <li><a href="#features">All Features</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="footer-col-title">Contact</div>
+                <ul class="footer-links">
+                    <li><a href="tel:+917982229379">+91 79822 29379</a></li>
+                    <li><a href="https://wa.me/917982229379" target="_blank">WhatsApp</a></li>
+                    <li><a href="#contact">Send Message</a></li>
+                    <li><a href="#">Darbhanga, Bihar</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 Bihar Digital Data & Network. All rights reserved.</span>
+            <span class="footer-tagline">"Learn Digital, Build Future"</span>
+        </div>
+    </div>
+</footer>
+
+<!-- FLOATING WA BUTTON -->
+<a href="https://wa.me/917982229379" class="float-wa" target="_blank">
+    <i class="fa-brands fa-whatsapp"></i>
+    <div class="float-wa-ping"></div>
+</a>
+
+<script>
+    // NAVBAR SCROLL
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // MOBILE MENU
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    let drawerOpen = false;
+
+    mobileBtn.addEventListener('click', () => {
+        drawerOpen = !drawerOpen;
+        mobileDrawer.classList.toggle('open', drawerOpen);
+        mobileBtn.innerHTML = drawerOpen
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    function closeMobileMenu() {
+        drawerOpen = false;
+        mobileDrawer.classList.remove('open');
+        mobileBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
     }
-  </script>
+
+    // SMOOTH SCROLL for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href').slice(1);
+            const el = document.getElementById(id);
+            if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+        });
+    });
+
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), 80);
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
+
+    // STAGGERED REVEAL for grid children
+    document.querySelectorAll('.serve-grid .serve-card, .features-grid .feature-item').forEach((card, i) => {
+        card.style.transitionDelay = (i * 60) + 'ms';
+    });
+
+    // FORM SUBMIT
+    function handleSubmit(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('.btn-submit');
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Message Sent!';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        setTimeout(() => {
+            btn.innerHTML = 'Send Message <i class="fa-solid fa-paper-plane"></i>';
+            btn.style.background = '';
+            e.target.reset();
+        }, 3000);
+    }
+
+    // COUNTER ANIMATION
+    function animateCounter(el, target, suffix = '') {
+        let start = 0;
+        const duration = 1400;
+        const step = (timestamp) => {
+            if (!start) start = timestamp;
+            const progress = Math.min((timestamp - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(eased * target) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const nums = entry.target.querySelectorAll('.stat-num');
+                const data = [
+                    [50, '+'],
+                    [7, ''],
+                    [1, 'yr'],
+                    [100, '%'],
+                ];
+                nums.forEach((el, i) => {
+                    if (data[i]) animateCounter(el, data[i][0], data[i][1]);
+                });
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.getElementById('stats');
+    if (statsSection) statsObserver.observe(statsSection);
+
+    console.log('%cBDDN Premium v2 Loaded', 'color:#3b82f6;font-family:monospace;font-weight:bold;font-size:14px');
+</script>
 </body>
 </html>
